@@ -37,20 +37,19 @@ train_path.sort()
 train_json = json.load(open('../../../SVHN-Data/mchar_train.json'))
 train_label = [train_json[x]['label'] for x in train_json]
 
-data = SVHNDataset(train_path, train_label,
-          transforms.Compose([
-              # 缩放到固定尺寸
-              transforms.Resize((64, 128)),
+train_loader = torch.utils.data.DataLoader(
+        SVHNDataset(train_path, train_label,
+                   transforms.Compose([
+                       transforms.Resize((64, 128)),
+                       transforms.ColorJitter(0.3, 0.3, 0.2),
+                       transforms.RandomRotation(5),
+                       transforms.ToTensor(),
+                       transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+            ])),
+    batch_size=10, # 每批样本个数
+    shuffle=False, # 是否打乱顺序
+    num_workers=10, # 读取的线程个数
+)
 
-              # 随机颜色变换
-              transforms.ColorJitter(0.2, 0.2, 0.2),
-
-              # 加入随机旋转
-              transforms.RandomRotation(5),
-
-              # 将图片转换为pytorch 的tesntor
-              # transforms.ToTensor(),
-
-              # 对图像像素进行归一化
-              # transforms.Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])
-            ]))
+# for data in train_loader:
+#     break
