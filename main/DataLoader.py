@@ -1,9 +1,9 @@
 
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import numpy as np
 import cv2
 import json
-train_json = json.load(open('../input/train.json'))
+train_json = json.load(open('../../../SVHN-Data/mchar_train.json'))
 
 # 数据标注处理
 def parse_json(d):
@@ -13,7 +13,7 @@ def parse_json(d):
     arr = arr.astype(int)
     return arr
 
-img = cv2.imread('../input/train/000000.png')
+img = cv2.imreasd('../../../SVHN-Data/mchar_train/000000.png')
 arr = parse_json(train_json['000000.png'])
 
 plt.figure(figsize=(10, 10))
@@ -26,3 +26,4 @@ for idx in range(arr.shape[1]):
     plt.imshow(img[arr[0, idx]:arr[0, idx]+arr[1, idx],arr[2, idx]:arr[2, idx]+arr[3, idx]])
     plt.title(arr[4, idx])
     plt.xticks([]); plt.yticks([])
+
